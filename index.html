@@ -7,56 +7,74 @@
       background: #0b0f1a;
       color: white;
       font-family: Arial;
+      margin: 0;
+    }
+
+    .navbar {
+      background: #111827;
+      padding: 15px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .container {
+      padding: 20px;
     }
 
     .player {
-      display: flex;
-      justify-content: space-between;
-      background: #111827;
-      margin: 10px;
+      background: #1f2937;
+      margin-bottom: 10px;
       padding: 15px;
       border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .rank {
-      font-weight: bold;
-      color: gold;
+    .userid {
+      font-size: 18px;
+    }
+
+    .tiers span {
+      background: #374151;
+      padding: 5px 10px;
+      margin: 3px;
+      border-radius: 6px;
+      font-size: 12px;
     }
   </style>
 </head>
 
 <body>
 
-<h1>🏆 SyndTiers Leaderboard</h1>
+<div class="navbar">🔥 SyndTiers</div>
 
-<div id="leaderboard"></div>
+<div class="container" id="players"></div>
 
 <script>
-fetch('https://syndtiers-api.onrender.com/api/data')
-.then(res => res.json())
-.then(data => {
-  const container = document.getElementById("leaderboard");
+fetch("https://syndtiers-api.onrender.com/api/data")
+  .then(res => res.json())
+  .then(data => {
+    const playersDiv = document.getElementById("players");
 
-  let rank = 1;
+    Object.entries(data.tiers).forEach(([userId, tiers]) => {
+      const div = document.createElement("div");
+      div.className = "player";
 
-  for (let userId in data.tiers) {
-    const tiers = data.tiers[userId];
+      let tierHTML = "";
+      Object.entries(tiers).forEach(([mode, tier]) => {
+        tierHTML += `<span>${mode}: ${tier}</span>`;
+      });
 
-    const div = document.createElement("div");
-    div.className = "player";
+      div.innerHTML = `
+        <div class="userid">${userId}</div>
+        <div class="tiers">${tierHTML}</div>
+      `;
 
-    div.innerHTML = `
-      <span class="rank">#${rank}</span>
-      <span>${userId}</span>
-      <span>${JSON.stringify(tiers)}</span>
-    `;
-
-    container.appendChild(div);
-    rank++;
-  }
-});
+      playersDiv.appendChild(div);
+    });
+  });
 </script>
 
 </body>
-
 </html>
