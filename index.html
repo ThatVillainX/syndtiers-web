@@ -52,7 +52,7 @@
 <div class="container" id="players"></div>
 
 <script>
-fetch("https://syndtiers-api.onrender.com/tiers")
+fetch("https://syndtiers-api.onrender.com/api/tiers")
   .then(res => res.json())
   .then(data => {
     const playersDiv = document.getElementById("players");
@@ -78,4 +78,5 @@ fetch("https://syndtiers-api.onrender.com/tiers")
 
 </body>
 </html>
+
 
